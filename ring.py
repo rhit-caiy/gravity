@@ -5,19 +5,22 @@ import math
 
 window=Tk()
 canvas=Canvas(window,bg="#FFFFFF",width=1000,height=1000)
-window.title("gravity")
+window.title("ring")
 
 g=1
 totaltime=10000
 frequency=1
-pointnum=1000
-r=100#distance of sun and planet
+
+pointnum=10000
+#distance of sun and planet
+r=100
 #ring
 r1=30
 r2=300
 rpoint=1
 xcenter=500
 ycenter=500
+#masses
 msun=1000
 mplanet=1
 vplanet=(g*msun/r)**0.5
@@ -65,7 +68,7 @@ def start():
             x1+=dx1
             y1+=dy1
             
-            if 25<ds<500 and dp>10:
+            if 25<ds<600 and dp>10:
                 newpositions.append((x1,y1))
                 newvelocitys.append((dx1,dy1))
         positions=newpositions
@@ -82,17 +85,23 @@ def start():
         
         canvas.delete("all")
         canvas.create_line(0,ycenter,2*xcenter,ycenter,fill="#FF8080")
+        canvas.create_line(xcenter,0,xcenter,2*ycenter,fill="#FF8080")
         for i in range(10):
             canvas.create_line(i*100,ycenter-5,i*100,ycenter+5,fill="#FF8080")
+            canvas.create_line(xcenter-5,i*100,xcenter+5,i*100,fill="#FF8080")
         for i in range(100):
             canvas.create_line(i*10,ycenter-2,i*10,ycenter+2,fill="#FF8080")
+            canvas.create_line(xcenter-2,i*10,xcenter+2,i*10,fill="#FF8080")
+        for i in 0.5,1,2,3:
+            canvas.create_oval(xcenter-r*i,ycenter-r*i,xcenter+r*i,ycenter+r*i,outline="#FF0000")
+        
         canvas.create_oval(xplanet-5+xcenter,yplanet-5+ycenter,xplanet+5+xcenter,yplanet+5+ycenter,fill="#0000FF")
         
         canvas.create_oval(-20+xcenter,-20+ycenter,20+xcenter,20+ycenter,outline="#FF0000",fill="#FF0000")
-        #canvas.create_text(100,10,text=str(t//frequency)+"/"+str(totaltime)+"  "+str(t))
         canvas.create_text(100,10,text=str(t)+"/"+str(frequency*totaltime))
-        canvas.create_text(300,10,text=str((xplanet**2+yplanet**2)**0.5))
+        canvas.create_text(300,10,text="radius "+str((xplanet**2+yplanet**2)**0.5))
         canvas.create_text(500,10,text="point: "+str(n))
+        canvas.create_text(700,10,text="mass ratio "+str(mplanet)+":"+str(msun))
         
         for p in range(n):
             x,y=positions[p][0],positions[p][1]
